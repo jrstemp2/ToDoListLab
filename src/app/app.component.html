@@ -298,23 +298,74 @@
   }
 
   .addbutton{
-    background-color: #125699;
+    background-color: #0a351a;
+    border-radius: 10px;
     color: whitesmoke;
+    border-color: black;
+  }
+  .addbutton:hover{
+    background-color: whitesmoke;
+    border-radius: 10px;
+    color: #0a351a;
+    border-color: black;
   }
 
   .completebutton{
     background-color: #125699;
+    border-radius: 10px;
     color: whitesmoke;
+    border-color: black;
   }
-  .incompletebutton{
-    background-color: #f53b63;
-    color: whitesmoke;
+  .completebutton:hover{
+    background-color: whitesmoke;
+    border-radius: 10px;
+    color: #125699;
+    border-color: black;
   }
 
-  .tasktable, td{
-    border:solid;
-    background-color: #c2c3c4;
+  .incompletebutton{
+    background-color: #5c1e2b;
+    color: whitesmoke;
+    border-color: black;
+    border-radius: 10px;
   }
+  .incompletebutton:hover{
+    background-color: whitesmoke;
+    color: #5c1e2b;
+    border-color: black;
+    border-radius: 10px;
+  }
+
+
+ 
+  tr:nth-child(even) {background-color: #f2f2f2;}
+  th {
+    height: 50px;
+  }
+  .tasktable, td, th{
+    border-collapse: collapse;
+    
+    border: 2px groove black;
+    padding: 10px;
+  }
+
+  input[type=text]:focus {
+  border: 5px solid black;
+}
+
+.searchbar{
+  border-radius: 10px;
+}
+  
+.deletebutton{
+  border-radius: 15px;
+  
+}
+.deletebutton:hover{
+  border-radius: 15px;
+  background-color: rgb(139, 22, 22);
+  color: whitesmoke;
+}
 
 
 </style>
@@ -341,8 +392,8 @@
   <h1>John's Tasks</h1>
   <br/>
   <div>
-    <label>Search By Term: </label><input type="text" [(ngModel)]="searchTerm"/>
-    <button (click)="searchList(taskArray)">Search</button>
+    <label>Search By Term: </label><input type="text" class="searchbar" [(ngModel)]="searchTerm"/>
+    <button (click)="searchList(taskArray)" class="completebutton">Search</button>
 </div>
 
 
@@ -356,6 +407,10 @@
         <th>Task Name</th>
         <th>Task Description</th>
         <th>Days to Complete</th>
+        <th>Mark Complete</th>
+        <th>Mark Incomplete</th>
+        <th>Updaye Task</th>
+        <th>&nbsp;</th>
       </tr>
       <tr *ngFor="let t of taskArray">
         <td>{{t.taskName}}</td>
@@ -363,8 +418,8 @@
         <td>{{t.daysToComplete}}</td>
         <td><button class="completebutton" *ngIf="!t.completed" (click)="t.completed = completeTask($event)">Mark Complete</button></td>
         <td><button class="incompletebutton" *ngIf="t.completed" (click)="t.completed = incompleteTask($event)">Mark InComplete</button></td>
-        <td><button (click)="deleteTask(t)">Delete Task</button></td>
         <td><button (click)="showUpdateForm(t)">Update Task</button></td>
+        <td><button (click)="deleteTask(t)" class="deletebutton">X</button></td>
         
       </tr>
     </table>
@@ -380,21 +435,15 @@
       <tr *ngFor="let f of filterArray">
         <td>{{f.taskName}}</td>
         <td>{{f.taskDescription}}</td>
-        <td>{{f.daysToComplete}}</td>
-        
+        <td>{{f.daysToComplete}}</td> 
       </tr>
-      
-    </table>
-    
+    </table> 
   </div>
-
-  
 
   <div [hidden]="!showFilter">
-    <button (click)="backToNormalView()">Click to Return to Main List with Options</button>
+    <button (click)="backToNormalView()" class="completebutton" >Click to Return to Main List with Options</button>
   </div>
   <div *ngIf="taskArray.length >= 0; then countCI(taskArray);">
-    
   </div>
 
   <p>Complete Count: {{tC}}</p>

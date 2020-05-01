@@ -133,17 +133,23 @@ export class AppComponent {
   searchList = function(taskArray:Task[]):void{
     
     this.clearFilterArray();
-    
-    for(let t of taskArray){  
-      if(t.taskDescription.includes(this.searchTerm)){
-        this.filterArray.push({taskName:t.taskName, taskDescription:t.taskDescription, daysToComplete:t.daysToComplete, completed:t.completed})
-      }
-      // if(this.searchTerm != ""){
+
+    if(this.searchTerm != ""){
+      for(let t of taskArray){  
+        if(t.taskDescription.includes(this.searchTerm)){
+          this.filterArray.push({taskName:t.taskName, taskDescription:t.taskDescription, daysToComplete:t.daysToComplete, completed:t.completed})
+        }
         
-      // }
-      
+      }
+      this.showFilter = true;
+      this.searchTerm = "";
+
     }
-    this.showFilter = true;
+    else{
+      this.showFilter = false;
+    }
+    
+    
   }
 
   clearFilterArray = function():void{
