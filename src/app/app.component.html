@@ -339,26 +339,82 @@
 <div class="content" role="main">
 
   <h1>John's Tasks</h1>
-  
   <br/>
+  <div>
+    <label>Search By Term: </label><input type="text" [(ngModel)]="searchTerm"/>
+    <button (click)="searchList(taskArray)">Search</button>
+</div>
+
+
   <br/>
   <br/>
   <br/>
 
-  <table class="tasktable">
-    <tr>
-      <th>Task Name</th>
-      <th>Task Description</th>
-      <th>Days to Complete</th>
-    </tr>
-    <tr *ngFor="let t of taskArray">
-      <td>{{t.taskName}}</td>
-      <td>{{t.taskDescription}}</td>
-      <td>{{t.daysToComplete}}</td>
-      <td><button class="completebutton" *ngIf="!t.completed" (click)="t.completed = completeTask($event)">Mark Complete</button></td>
-      <td><button class="incompletebutton" *ngIf="t.completed" (click)="t.completed = incompleteTask($event)">Mark InComplete</button></td>
-    </tr>
-  </table>
+  <div>
+    <table class="tasktable" [hidden]="showFilter">
+      <tr>
+        <th>Task Name</th>
+        <th>Task Description</th>
+        <th>Days to Complete</th>
+      </tr>
+      <tr *ngFor="let t of taskArray">
+        <td>{{t.taskName}}</td>
+        <td>{{t.taskDescription}}</td>
+        <td>{{t.daysToComplete}}</td>
+        <td><button class="completebutton" *ngIf="!t.completed" (click)="t.completed = completeTask($event)">Mark Complete</button></td>
+        <td><button class="incompletebutton" *ngIf="t.completed" (click)="t.completed = incompleteTask($event)">Mark InComplete</button></td>
+        <td><button (click)="deleteTask(t)">Delete Task</button></td>
+        <td><button (click)="showUpdateForm(t)">Update Task</button></td>
+        
+      </tr>
+    </table>
+  </div>
+
+  <div>
+    <table class="tasktable" [hidden]="!showFilter">
+      <tr>
+        <th>Task Name</th>
+        <th>Task Description</th>
+        <th>Days to Complete</th>
+      </tr>
+      <tr *ngFor="let f of filterArray">
+        <td>{{f.taskName}}</td>
+        <td>{{f.taskDescription}}</td>
+        <td>{{f.daysToComplete}}</td>
+        
+      </tr>
+      
+    </table>
+    
+  </div>
+
+  
+
+  <div [hidden]="!showFilter">
+    <button (click)="backToNormalView()">Click to Return to Main List with Options</button>
+  </div>
+  <div *ngIf="taskArray.length >= 0; then countCI(taskArray);">
+    
+  </div>
+
+  <p>Complete Count: {{tC}}</p>
+  <p>Incomplete Count: {{tI}}</p>
+
+  
+  
+  
+
+
+  <br/>
+  <div>
+    <p [hidden]="!showForm">
+      <label>Task Name: </label><input type="text" [(ngModel)]="uTaskName"/>
+      <label>Task Name: </label><input type="text" [(ngModel)]="uTaskDesc"/>
+      <label>Task Name: </label><input type="text" [(ngModel)]="uDaysToComplete"/>
+
+      <button (click)="updateTask($event)" >Update</button>
+    </p>
+  </div>
 
 
   <h2>Add a Task</h2>
@@ -371,25 +427,22 @@
       <label><strong>Days to Complete:</strong></label><br/>
       <input type="text" [(ngModel)]="newDaysToComplete"/><br/>
       <button [hidden]="incompleteForm()" class="addbutton" (click)="addTask($event)">Add My New Task</button>
+      
     </p>
   </div>
 
+ 
+ 
   
+  <br/>
+  <h1 [hidden]="taskArray.length > 0">Congrats!!!</h1>
+  <h1 [hidden]="tI > 0">Congrats!!!</h1>
   
-
-  
-  
-  
-
-    
-  
-
-  
-
-  
-
   <!-- Footer -->
   <footer>
+    
+  
+    
   </footer>
 
   <svg id="clouds" alt="Gray Clouds Background" xmlns="http://www.w3.org/2000/svg" width="2611.084" height="485.677" viewBox="0 0 2611.084 485.677">
